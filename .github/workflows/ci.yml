@@ -1,0 +1,52 @@
+name: CI
+on:
+  push:
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    container: crystallang/crystal:latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Format
+        run: crystal tool format --check
+      - name: Lint
+        uses: crystal-ameba/github-action@v0.2.12
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    name: "${{ !matrix.stable && '🚧 ' || ''}}crystal: ${{ matrix.crystal }}, kcov: ${{ matrix.kcov }}"
+    runs-on: ubuntu-latest
+    container: kcov/kcov:v${{ matrix.kcov }}
+    strategy:
+      fail-fast: false
+      matrix:
+        crystal:
+          - 1.1.1
+          - 1.2.2
+        kcov:
+          - 37
+          - 38
+          - 39
+        stable: [true]
+        include:
+          - crystal: nightly
+            stable: false
+            kcov: 37
+          - crystal: nightly
+            stable: false
+            kcov: 38
+          - crystal: nightly
+            stable: false
+            kcov: 39
+    steps:
+      - uses: crystal-lang/install-crystal@v1.5.3
+        with:
+          crystal: ${{ matrix.crystal }}
+      - uses: actions/checkout@v2
+      - run: shards install
+      - run: crystal spec --order random
+
