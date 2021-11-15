@@ -43,6 +43,29 @@ jobs:
             stable: false
             kcov: 39
     steps:
+      # - name: Cache kcov
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ~/kcov
+      #     key: ${{ matrix.kcov }}
+      -
+        run: |
+          apt-get update
+          apt-get install -qy --no-install-recommends --no-upgrade \
+            cmake \
+            make \
+            binutils-dev \
+            libcurl4-openssl-dev \
+            zlib1g-dev \
+            libdw-dev \
+            libiberty-dev
+          git clone https://github.com/SimonKagstrom/kcov
+          cd kcov
+          git checkout v${{ matrix.kcov }}
+          cmake .
+          make
+          sudo make install
       - uses: crystal-lang/install-crystal@v1.5.3
         with:
           crystal: ${{ matrix.crystal }}
