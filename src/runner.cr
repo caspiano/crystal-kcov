@@ -87,7 +87,7 @@ module CrKcov
           state.report << "#{file.file}\t#{file.percent_covered}\t(#{file.covered_lines} / #{file.total_lines})"
         end
         cov.percent_covered = colorize_by_threshold(cov.percent_covered, cov.percent_low, cov.percent_high)
-        state.report << "\nTotal covored:\t#{cov.percent_covered}\t(#{cov.covered_lines} / #{cov.total_lines})"
+        state.report << "\nTotal covered:\t#{cov.percent_covered}\t(#{cov.covered_lines} / #{cov.total_lines})"
       end
     end
 

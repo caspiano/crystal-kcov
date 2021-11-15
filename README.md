@@ -28,7 +28,7 @@ The last command will place the generated `kcov` binary into `/usr/local/bin`, b
 1. Add the dependency to your `shard.yml`:
 
    ```yaml
-   developer_dependencies:
+   development_dependencies:
      crystal-kcov:
        github: vici37/crystal-kcov
    ```
