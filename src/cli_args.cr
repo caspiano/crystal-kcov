@@ -7,16 +7,12 @@ module CrKcov
     property runner_file : String
     property proc_runner : ProcessRunner
     property exit_code : Int32 = 0
-    property coverage : Coverage?
+    property! coverage : Coverage
     property report = [] of String
 
     property options : Options
 
     def initialize(@options, @pwd, @base, @runner_file, @proc_runner)
-    end
-
-    def coverage!
-      coverage.not_nil!
     end
   end
 

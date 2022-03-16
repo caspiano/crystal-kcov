@@ -105,6 +105,7 @@ module CrKcov
       latest_name = "#{state.options.coverage_dir}/#{state.base}"
       latest_time = Time.unix(0)
       Dir.children(state.options.coverage_dir).each do |child|
+        puts "coverage_dir #{options.coverage_dir}/#{child}"
         if child.starts_with?(state.base) && child.size > state.base.size
           info = File.info("#{state.options.coverage_dir}/#{child}")
           if info.modification_time > latest_time
