@@ -41,8 +41,8 @@ module CrKcov
       exit(state.exit_code)
     end
 
-    def state
-      (@state ||= init_state).not_nil!
+    getter state : State do
+      init_state
     end
 
     def init_state
@@ -60,8 +60,7 @@ module CrKcov
 
       proc_runner = ProcessRunner.new(options)
 
-      state = State.new(options, pwd, base, runner_file, proc_runner)
-      state
+      State.new(options, pwd, base, runner_file, proc_runner)
     end
 
     def process_coverage
@@ -83,7 +82,7 @@ module CrKcov
             file.file = file.file.gsub(state.pwd, "")
             file.percent_covered = colorize_by_threshold(file.percent_covered, cov.percent_low, cov.percent_high)
           end
-          max_file_length = cov.files.map { |f| f.file.size }.max
+          max_file_length = cov.files.max_of(&.file.size)
           cov.files.sort_by(&.file).each do |file|
             file.file = file.file.ljust(max_file_length)
             state.report << "#{file.file}\t#{file.percent_covered}\t(#{file.covered_lines} / #{file.total_lines})"
