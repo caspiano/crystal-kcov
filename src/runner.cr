@@ -137,10 +137,8 @@ module CrKcov
     def create_spec_runner
       File.open(state.runner_file, "w") do |file|
         # Colorize.enabled so we still get the terminal colors output
-        file.puts(%(
-          require "./spec/**"
-          Colorize.enabled=true"
-        ))
+        file.puts("require \"./spec/**\"
+          Colorize.enabled=true")
       end
     end
   end
